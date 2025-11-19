@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>决策树基础知识 - 决策树学习平台</title>
+    <style>
+        /* 复用首页的样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav li {
+            margin-left: 25px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+        
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .content-page {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 30px 0;
+        }
+        
+        .content-page h1 {
+            color: #2575fc;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .content-page h2 {
+            color: #2575fc;
+            margin: 25px 0 15px;
+        }
+        
+        .content-page p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+        
+        .content-page ul, .content-page ol {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .content-page li {
+            margin-bottom: 8px;
+        }
+        
+        .code-block {
+            background-color: #f8f9fa;
+            border-left: 4px solid #2575fc;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: #2575fc;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: #1a5fd8;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #6c757d;
+        }
+        
+        .back-btn:hover {
+            background-color: #5a6268;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav li {
+                margin: 5px 10px;
+            }
+            
+            .content-page {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="header-content">
+            <div class="logo">决策树学习平台</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">首页</a></li>
+                    <li><a href="basics.html">决策树基础知识</a></li>
+                    <li><a href="id3.html">ID3算法解读</a></li>
+                    <li><a href="other-algorithms.html">其他决策树算法</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- 内容页面 -->
+        <section class="content-page">
+            <h1>决策树分类规则的基础知识</h1>
+            
+            <h2>什么是决策树？</h2>
+            <p>决策树是一种基于树形结构的分类方法，它通过对属性值的测试从根节点开始分支，直到到达叶节点（决策结果）。</p>
+            
+            <h2>决策树的组成部分</h2>
+            <ul>
+                <li><strong>根节点</strong>：包含整个数据集的起始节点</li>
+                <li><strong>内部节点</strong>：表示对一个属性的测试</li>
+                <li><strong>分支</strong>：表示测试的结果</li>
+                <li><strong>叶节点</strong>：表示最终的分类决策</li>
+            </ul>
+            
+            <h2>决策树的构建过程</h2>
+            <ol>
+                <li>选择最佳属性作为当前节点的分裂属性</li>
+                <li>根据该属性的不同取值创建分支</li>
+                <li>对每个分支递归执行上述过程，直到：
+                    <ul>
+                        <li>所有样本属于同一类别</li>
+                        <li>没有剩余属性可用于分裂</li>
+                        <li>分支没有样本</li>
+                    </ul>
+                </li>
+            </ol>
+            
+            <h2>决策树的优点</h2>
+            <ul>
+                <li>易于理解和解释</li>
+                <li>可以处理数值型和类别型数据</li>
+                <li>不需要大量的数据预处理</li>
+                <li>能够处理多输出问题</li>
+            </ul>
+            
+            <h2>决策树的缺点</h2>
+            <ul>
+                <li>容易过拟合</li>
+                <li>对数据中的小变化敏感</li>
+                <li>可能创建过于复杂的树</li>
+            </ul>
+            
+            <h2>示例：简单的决策树</h2>
+            <div class="code-block">
+                // 伪代码：决策树分类过程<br>
+                function classify(sample, tree):<br>
+                &nbsp;&nbsp;if tree.is_leaf_node:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;return tree.label<br>
+                &nbsp;&nbsp;else:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;attribute_value = sample[tree.attribute]<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;branch = tree.branches[attribute_value]<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;return classify(sample, branch)
+            </div>
+            
+            <a href="index.html" class="btn back-btn">返回首页</a>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>决策树学习平台 &copy; 2023 | 使用HTML、CSS和JavaScript构建</p>
+        </div>
+    </footer>
+</body>
+</html>
